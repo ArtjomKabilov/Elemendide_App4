@@ -70,7 +70,10 @@ namespace Elemendide_App
 
         public async void Btn3_Clicked(object sender, EventArgs e)
         {
-            
+            if (webView.CanGoBack)
+            {
+                webView.GoBack();
+            }
         }
 
         public async void Btn2_Clicked(object sender, EventArgs e)
