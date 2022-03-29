@@ -62,16 +62,26 @@ namespace Elemendide_App
             btn2.Clicked += Btn2_Clicked;
             btn.Clicked += Btn_Clicked;
             btn3.Clicked += Btn3_Clicked;
+            btn4.Clicked += Btn4_Clicked;
             st = new StackLayout { Children = { picker, btn, btn2,btn3,btn4 } };
             //sb = new StackLayout { Children = { btn2 } };
             Content = st;
             //Content = sb;
         }
 
+        private void Btn4_Clicked(object sender, EventArgs e)
+        {
+            if (webView.CanGoBack)
+            {
+                webView.GoForward();
+            }
+        }
+
         public async void Btn3_Clicked(object sender, EventArgs e)
         {
             if (webView.CanGoBack)
             {
+                
                 webView.GoBack();
             }
         }

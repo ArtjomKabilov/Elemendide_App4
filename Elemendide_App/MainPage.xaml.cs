@@ -72,13 +72,29 @@ namespace Elemendide_App
                 Text = "Picker Page",
                 BackgroundColor = Color.LightGreen,
             };
+            Button TP = new Button()
+            {
+                Text = "Table Page",
+                BackgroundColor = Color.LightGreen,
+            };
+            Button H = new Button()
+            {
+                Text = "Harjatus Page",
+                BackgroundColor = Color.LightGreen,
+            };
+            Button horos = new Button()
+            {
+                Text = "Horoskop Page",
+                BackgroundColor = Color.LightGreen,
+            };
             RGB_Btn.Clicked += RGB_Btn_Clicked;
             Valgusfoor_btn.Clicked += Valgusfoor_btn_Clicked;
             TTT.Clicked += TTT_Clicked;
             PP.Clicked += PP_Clicked;
+            TP.Clicked += TP_Clicked;
             StackLayout st = new StackLayout()
             {
-                Children = { Ent_btn , Timer_btn , cliker , Date_btn , SS_btn , frame_btn , image_btn, Valgusfoor_btn, RGB_Btn, TTT, PP }
+                Children = { Ent_btn , Timer_btn , cliker , Date_btn , SS_btn , frame_btn , image_btn, Valgusfoor_btn, RGB_Btn, TTT, PP, TP, H, horos }
             };
 
             st.BackgroundColor = Color.AntiqueWhite;
@@ -88,6 +104,23 @@ namespace Elemendide_App
             cliker.Clicked += Cliker_Clicked;
             Date_btn.Clicked += Date_btn_Clicked;
             SS_btn.Clicked += SS_btn_Clicked;
+            H.Clicked += H_Clicked;
+            horos.Clicked += Horos_Clicked;
+        }
+
+        private async void Horos_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new Horoskop());
+        }
+
+        private async void H_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new Harjatus());
+        }
+
+        private async void TP_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new Table_Page());
         }
 
         private async void PP_Clicked(object sender, EventArgs e)
