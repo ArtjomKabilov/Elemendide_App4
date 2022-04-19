@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Plugin.Messaging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,32 @@ namespace Elemendide_App
         SwitchCell sc;
         ImageCell ic;
         TableSection fotosection;
+        Button btn1 = new Button
+        {
+            Text = "Email"
+        };
+        Button btn2 = new Button
+        {
+            Text = "Phone sms"
+        };
+        Button btn3 = new Button
+        {
+            Text = "Phone call"
+        };
+        StackLayout st;
+        EntryCell telefon = new EntryCell
+                        {
+                            Label="Telefon",
+                            Placeholder="Sissesta tel. number",
+                            Keyboard=Keyboard.Telephone
+    };
+         EntryCell email = new EntryCell
+         {
+             Label = "Email",
+             Placeholder = "Sissesta email",
+             Keyboard = Keyboard.Email
+         };
+        
         public Table_Page()
         {
             sc = new SwitchCell { Text = "Näita veel" };
@@ -26,6 +53,7 @@ namespace Elemendide_App
                 Text = "Foto nimetus",
                 Detail = "Foto kirjeldus"
             };
+
             fotosection = new TableSection();
             tableview = new TableView
             {
@@ -43,24 +71,60 @@ namespace Elemendide_App
                     },
                     new TableSection("Kontaktandmed: ")
                     {
-                        new EntryCell
-                        {
-                            Label="Telefon",
-                            Placeholder="Sissesta tel. number",
-                            Keyboard=Keyboard.Telephone
-                        },
-                        new EntryCell
-                        {
-                            Label="Email",
-                            Placeholder="Sissesta email",
-                            Keyboard=Keyboard.Email
-                        },
+                        email,telefon,
+
                         sc
+
                     },
-                    fotosection
+                    new TableSection("lisavoimalused: ")
+                    {
+                        new ViewCell
+                        {
+                            View = new StackLayout{Children = {btn1,btn2,btn3}, Orientation = StackOrientation.Horizontal }
+                            
+
+                        }
+                    },
+                    fotosection,
                 }
+
+
             };
+            btn1.Clicked += Btn1_Clicked;
+            btn2.Clicked += Btn2_Clicked;
+            btn3.Clicked += Btn3_Clicked;
+
+            
             Content = tableview;
+        }
+
+        private void Btn3_Clicked(object sender, EventArgs e)
+        {
+            var phoneDialer = CrossMessaging.Current.PhoneDialer;
+            if (phoneDialer.CanMakePhoneCall)
+            {
+                phoneDialer.MakePhoneCall(telefon.Text);
+            }
+                
+        }
+
+        private void Btn2_Clicked(object sender, EventArgs e)
+        {
+            var smsMessenger = CrossMessaging.Current.SmsMessenger;
+            if (smsMessenger.CanSendSms)
+            {
+                smsMessenger.SendSms(telefon.Text, "Hello World!");
+            }
+                
+        }
+
+        private void Btn1_Clicked(object sender, EventArgs e)
+        {
+            var emailMessenger = CrossMessaging.Current.EmailMessenger;
+            if (emailMessenger.CanSendEmail)
+            {
+                emailMessenger.SendEmail(email.Text, "тема письма", "текст письма");
+            }
         }
 
         private void Sc_OnChanged(object sender, ToggledEventArgs e)

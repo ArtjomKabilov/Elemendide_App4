@@ -15,7 +15,9 @@ namespace Elemendide_App
         Picker picker;
         WebView webView;
         Button btn, btn2,btn3,btn4;
-        StackLayout st,sb;
+        StackLayout st;
+        Label lb;
+        Entry ent;
         List<string> lehed = new List<string>() { "https://tahvel.edu.ee", "https://moodle.edu.ee", "https://www.tthk.ee", "https://www.google.ee" };
         //string[] lehed = new string[4] { "https://tahvel.edu.ee", "https://moodle.edu.ee", "https://www.tthk.ee", "https://www.google.ee" };
         public Picker_Page()
@@ -31,6 +33,11 @@ namespace Elemendide_App
             picker.SelectedIndexChanged += Picker_SelectedIndexChanged;
             webView = new WebView
             { };
+            ent = new Entry
+            {
+                Text= "https://",
+            };
+            ent.Completed += Ent_Completed;
             btn = new Button
             {
                 Text = "Uus webilehed",
@@ -46,13 +53,14 @@ namespace Elemendide_App
             btn3 = new Button
             {
                 Text = "<-",
-                HorizontalOptions = LayoutOptions.Start,
-                VerticalOptions = LayoutOptions.Start
+                HorizontalOptions = LayoutOptions.StartAndExpand,
+                VerticalOptions = LayoutOptions.Start,
+                
             };
             btn4 = new Button
             {
                 Text = "->",
-                HorizontalOptions = LayoutOptions.Start,
+                HorizontalOptions = LayoutOptions.EndAndExpand,
                 VerticalOptions = LayoutOptions.Start
             };
             SwipeGestureRecognizer swipe = new SwipeGestureRecognizer();
@@ -63,10 +71,25 @@ namespace Elemendide_App
             btn.Clicked += Btn_Clicked;
             btn3.Clicked += Btn3_Clicked;
             btn4.Clicked += Btn4_Clicked;
-            st = new StackLayout { Children = { picker, btn, btn2,btn3,btn4 } };
+
+            st = new StackLayout { Children = {ent, picker, btn, btn2,btn3,btn4 } };
             //sb = new StackLayout { Children = { btn2 } };
             Content = st;
             //Content = sb;
+        }
+
+        private void Ent_Completed(object sender, EventArgs e)
+        {
+            if (webView != null)
+            {
+                st.Children.Remove(webView);
+            }
+            webView = new WebView
+            {
+                Source = new UrlWebViewSource { Url = ent.Text },
+                VerticalOptions = LayoutOptions.FillAndExpand,
+            };
+            st.Children.Add(webView);
         }
 
         private void Btn4_Clicked(object sender, EventArgs e)
