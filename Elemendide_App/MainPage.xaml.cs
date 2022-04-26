@@ -87,6 +87,12 @@ namespace Elemendide_App
                 Text = "Horoskop Page",
                 BackgroundColor = Color.LightGreen,
             };
+            Button listViev = new Button()
+            {
+                Text = "ListView",
+                BackgroundColor = Color.LightGreen,
+            };
+            listViev.Clicked += ListViev_Clicked;
             RGB_Btn.Clicked += RGB_Btn_Clicked;
             Valgusfoor_btn.Clicked += Valgusfoor_btn_Clicked;
             TTT.Clicked += TTT_Clicked;
@@ -94,11 +100,11 @@ namespace Elemendide_App
             TP.Clicked += TP_Clicked;
             StackLayout st = new StackLayout()
             {
-                Children = { Ent_btn , Timer_btn , cliker , Date_btn , SS_btn , frame_btn , image_btn, Valgusfoor_btn, RGB_Btn, TTT, PP, TP, H, horos }
+                Children = { Ent_btn , Timer_btn , cliker , Date_btn , SS_btn , frame_btn , image_btn, Valgusfoor_btn, RGB_Btn, TTT, PP, TP, H, horos, listViev }
             };
-
+            ScrollView scrollView = new ScrollView { Content = st };
             st.BackgroundColor = Color.AntiqueWhite;
-            Content = st;
+            
             Ent_btn.Clicked += Ent_btn_Clicked;
             Timer_btn.Clicked += Timer_btn_Clicked;
             cliker.Clicked += Cliker_Clicked;
@@ -106,6 +112,13 @@ namespace Elemendide_App
             SS_btn.Clicked += SS_btn_Clicked;
             H.Clicked += H_Clicked;
             horos.Clicked += Horos_Clicked;
+            Content = scrollView;
+        }
+        
+
+        private async void ListViev_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new List_Page());
         }
 
         private async void Horos_Clicked(object sender, EventArgs e)
