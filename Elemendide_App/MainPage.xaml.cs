@@ -92,15 +92,21 @@ namespace Elemendide_App
                 Text = "ListView",
                 BackgroundColor = Color.LightGreen,
             };
+            Button Country = new Button()
+            {
+                Text = "Riik",
+                BackgroundColor = Color.LightGreen,
+            };
             listViev.Clicked += ListViev_Clicked;
             RGB_Btn.Clicked += RGB_Btn_Clicked;
             Valgusfoor_btn.Clicked += Valgusfoor_btn_Clicked;
             TTT.Clicked += TTT_Clicked;
             PP.Clicked += PP_Clicked;
             TP.Clicked += TP_Clicked;
+            Country.Clicked += Country_Clicked;
             StackLayout st = new StackLayout()
             {
-                Children = { Ent_btn , Timer_btn , cliker , Date_btn , SS_btn , frame_btn , image_btn, Valgusfoor_btn, RGB_Btn, TTT, PP, TP, H, horos, listViev }
+                Children = { Ent_btn , Timer_btn , cliker , Date_btn , SS_btn , frame_btn , image_btn, Valgusfoor_btn, RGB_Btn, TTT, PP, TP, H, horos, listViev, Country }
             };
             ScrollView scrollView = new ScrollView { Content = st };
             st.BackgroundColor = Color.AntiqueWhite;
@@ -114,7 +120,11 @@ namespace Elemendide_App
             horos.Clicked += Horos_Clicked;
             Content = scrollView;
         }
-        
+
+        private async void Country_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new Contry());
+        }
 
         private async void ListViev_Clicked(object sender, EventArgs e)
         {

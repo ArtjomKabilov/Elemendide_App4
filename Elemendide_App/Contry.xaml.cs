@@ -14,9 +14,9 @@ using Xamarin.Forms.Xaml;
 namespace Elemendide_App
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class List_Page : ContentPage
+    public partial class Contry : ContentPage
     {
-        public ObservableCollection<Telefon> telefons { get; set; }
+        public ObservableCollection<Country> Countrys { get; set; }
         Label lbl_list;
         ListView List;
         Button lisa, kustuta;
@@ -24,50 +24,47 @@ namespace Elemendide_App
         MediaFile file;
         string imageName;
         string filePath;
-        public List_Page()
+        public Contry()
         {
-            telefons = new ObservableCollection<Telefon>
+            Countrys = new ObservableCollection<Country>
             {
-                new Telefon {Nimetus="Samsung Galaxy 22 Ultra", Tootja="Samsung",Hind="1349", Pilt="sam.jpg"},
-                new Telefon {Nimetus="Xiaomi Mi 11 Lite", Tootja="Xiaomi",Hind="339"},
-                new Telefon {Nimetus="Iphone 13 Pro Max", Tootja="Apple",Hind="1400"},
-                new Telefon {Nimetus="Samsung Galaxy A52s 5G", Tootja="Samsung",Hind="450"}
+                new Country {Nimetus="Eesti", Kapitali="Tallinn",Elanikkonnast="1328439", lipp="eesti.jpg"}
             };
             lbl_list = new Label
             {
-                Text = "Telefonide loetelu",
+                Text = "Riikide loetelu",
                 HorizontalOptions = LayoutOptions.Center,
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
             };
             List = new ListView
             {
-                SeparatorColor = Color.Orange,
-                Header = "Minu oma kolektion",
+                SeparatorColor = Color.AliceBlue,
+                Header = "Riik",
                 Footer = DateTime.Now.ToString("T"),
 
                 HasUnevenRows = true,
-                ItemsSource = telefons,
+                ItemsSource = Countrys,
                 ItemTemplate = new DataTemplate(() =>
                 {
-                    ImageCell imageCell = new ImageCell { TextColor = Color.Red, DetailColor = Color.Green };
+                    ImageCell imageCell = new ImageCell { TextColor = Color.White, DetailColor = Color.White };
                     imageCell.SetBinding(ImageCell.TextProperty, "Nimetus");
-                    Binding companyBinding = new Binding { Path = "Tootja", StringFormat = "Tore telefon filmalt {0}" };
+                    Binding companyBinding = new Binding { Path = "Kapitali", StringFormat = " {0}" };
                     imageCell.SetBinding(ImageCell.DetailProperty, companyBinding);
-                    Binding a = new Binding { Path = "Hind", StringFormat = "Hind: {0}" };
+                    Binding a = new Binding { Path = "Elanikkonnast", StringFormat = "Elanikkonnast: {0}" };
                     imageCell.SetBinding(ImageCell.DetailProperty, a);
-                    imageCell.SetBinding(ImageCell.ImageSourceProperty, "Pilt");
+                    imageCell.SetBinding(ImageCell.ImageSourceProperty, "lipp");
                     return imageCell;
 
                 })
             };
-            lisa = new Button { Text = "Lisa Telefon" };
-            kustuta = new Button { Text = "Kustuta telefon" };
+            lisa = new Button { Text = "Lisa riik" };
+            kustuta = new Button { Text = "Kustuta riik" };
             List.ItemTapped += List_ItemTapped;
             kustuta.Clicked += Kustuta_Clicked;
             lisa.Clicked += Lisa_Clicked;
             this.Content = new StackLayout { Children = { lbl_list, List, lisa, kustuta } };
         }
-
+        public List<string> Uris;
         private ObservableCollection<MediaFile> _images;
         public ObservableCollection<MediaFile> Images {
             get { return _images ?? (_images = new ObservableCollection<MediaFile>()); }
@@ -102,8 +99,8 @@ namespace Elemendide_App
                 #endregion
 
                 imageName = "SomeImageName.jpg";
-                
-    }
+
+            }
             catch (Exception ex)
             {
                 Debug.WriteLine("\nIn PictureViewModel.PickPictureAsync() - Exception:\n{0}\n", ex);                           //TODO: Do something more useful
@@ -111,40 +108,41 @@ namespace Elemendide_App
             }
             finally { if (file != null) { file.Dispose(); } }
 
-            
+
 
             return imageName;
         }
         private async void Lisa_Clicked(object sender, EventArgs e)
         {
-            
+
             //telefons.Add(new Telefon { Nimetus = "Telefon", Tootja = "Tootja", Hind = 1 });
-            string site = await DisplayPromptAsync("Kakoi telefon ti hotes dobavit?", "Napishi ego", keyboard: Keyboard.Text);
+            string site = await DisplayPromptAsync("Kakoi stranu ti hotes dobavit?", "Napishi ego", keyboard: Keyboard.Text);
 
-            string site2 = await DisplayPromptAsync("Kakoi telefon ti hotes dobavit?", "Napishi ego", keyboard: Keyboard.Text);
+            string site2 = await DisplayPromptAsync("Kakoi u nee stolitsa?", "Napishi ego", keyboard: Keyboard.Text);
 
-            string site3 = await DisplayPromptAsync("Kakoi tsena?", "Napishi ego", keyboard: Keyboard.Numeric);
+            string site3 = await DisplayPromptAsync("Kakoi kolitestvo naroda tam zivot?", "Napishi ego", keyboard: Keyboard.Numeric);
             PickPictureAsync();
-            string site4 = imageName;
-            telefons.Add(item: new Telefon { Nimetus = site, Tootja = site2, Hind = site3, Pilt = site4});
+            var site4 = Images;
+
+            Countrys.Add(item: new Country { Nimetus = site, Kapitali = site2, Elanikkonnast = site3, lipp = site4.ToString() });
 
         }
 
         private void Kustuta_Clicked(object sender, EventArgs e)
         {
-            Telefon phone = List.SelectedItem as Telefon;
-            if (phone != null)
+            Country country = List.SelectedItem as Country;
+            if (country != null)
             {
-                telefons.Remove(phone);
+                Countrys.Remove(country);
                 List.SelectedItem = null;
             }
         }
 
         private async void List_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            Telefon selectedPhone = e.Item as Telefon;
+            Country selectedPhone = e.Item as Country;
             if (selectedPhone != null)
-                await DisplayAlert("Выбранная модель", $"{selectedPhone.Tootja}-{selectedPhone.Nimetus}", "OK");
+                await DisplayAlert("Riik", $"{selectedPhone.Kapitali}-{selectedPhone.Nimetus}", "OK");
         }
 
 
