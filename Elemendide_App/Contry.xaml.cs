@@ -26,6 +26,7 @@ namespace Elemendide_App
         string filePath;
         public Contry()
         {
+
             Countrys = new ObservableCollection<Country>
             {
                 new Country {Nimetus="Eesti", Kapitali="Tallinn",Elanikkonnast="1328439", lipp="eesti.jpg"}
@@ -64,7 +65,7 @@ namespace Elemendide_App
             lisa.Clicked += Lisa_Clicked;
             this.Content = new StackLayout { Children = { lbl_list, List, lisa, kustuta } };
         }
-        public List<string> Uris;
+        /*public List<string> Uris;
         private ObservableCollection<MediaFile> _images;
         public ObservableCollection<MediaFile> Images {
             get { return _images ?? (_images = new ObservableCollection<MediaFile>()); }
@@ -111,21 +112,24 @@ namespace Elemendide_App
 
 
             return imageName;
-        }
+        }*/
         private async void Lisa_Clicked(object sender, EventArgs e)
         {
 
             //telefons.Add(new Telefon { Nimetus = "Telefon", Tootja = "Tootja", Hind = 1 });
-            string site = await DisplayPromptAsync("Kakoi stranu ti hotes dobavit?", "Napishi ego", keyboard: Keyboard.Text);
-
-            string site2 = await DisplayPromptAsync("Kakoi u nee stolitsa?", "Napishi ego", keyboard: Keyboard.Text);
-
-            string site3 = await DisplayPromptAsync("Kakoi kolitestvo naroda tam zivot?", "Napishi ego", keyboard: Keyboard.Numeric);
-            PickPictureAsync();
-            var site4 = Images;
-
-            Countrys.Add(item: new Country { Nimetus = site, Kapitali = site2, Elanikkonnast = site3, lipp = site4.ToString() });
-
+            string site = await DisplayPromptAsync("Millise riigi soovite lisada?", "Palun kirjuta", keyboard: Keyboard.Text);
+            string site2 = await DisplayPromptAsync("Mis on selle pealinn?", "Palun kirjuta", keyboard: Keyboard.Text);
+            string site3 = await DisplayPromptAsync("Kui palju inimesi seal elab?", "Palun kirjuta", keyboard: Keyboard.Numeric);
+            string site4 = await DisplayPromptAsync("Sisesta lipu foto", "Palun kirjuta", keyboard: Keyboard.Text);
+            if (site == "" || site2 == "" || site3 == "" || site4 == "")
+                return;
+            Country newest = new Country { Nimetus = site, Kapitali = site2, Elanikkonnast = site3, lipp = site4 };
+            foreach (Country thing in Countrys)
+            {
+                if (thing.Nimetus == newest.Nimetus)
+                    return;
+            }
+            Countrys.Add(item: newest);
         }
 
         private void Kustuta_Clicked(object sender, EventArgs e)
